@@ -19,6 +19,20 @@ public class AppliMusique {
     public static Musique ListMusique;
 
     public static void main(String[] args){
+        /*
+        System.out.println("Choisir la structure de données :");
+        System.out.println("1 - ArrayList");
+        System.out.println("2 - LinkedList");
+
+        int choix = scanner.nextInt();
+
+         if (choix == 1) {
+            List<Musique> ListMusique = new ArrayList<Musique>();
+        } else {
+            List<Musique> ListMusique = new LinkedList<Musique>();
+        }
+        */
+        
         boolean ARRAYlist = false;
         Scanner scanner = new Scanner(System.in);
         int choix = 0, choix_charge;
@@ -86,6 +100,11 @@ public class AppliMusique {
             default:
                 System.out.println("");
                 System.out.println("Saississez un nombre ente 1 et 5");
+                System.out.println("1 - Charger les données (choix du fichier)");
+                System.out.println("2 - Afficher les données");
+                System.out.println("3 - Trier les données");
+                System.out.println("4 - Filtrer les données");
+                System.out.println("5 - Rechercher des données concernant un titre");
                 break;
         }
     }
