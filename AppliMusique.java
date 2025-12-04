@@ -2,10 +2,14 @@ package SAE_spotify;
 
 
 
+
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,36 +18,19 @@ import java.util.Scanner;
 
 public class AppliMusique {
 
-
+    private static List<Musique> ListMusique;
     private static String nom;
-    public static Musique ListMusique;
+
 
     public static void main(String[] args){
-        /*
-        System.out.println("Choisir la structure de données :");
-        System.out.println("1 - ArrayList");
-        System.out.println("2 - LinkedList");
-
-        int choix = scanner.nextInt();
-
-         if (choix == 1) {
-            List<Musique> ListMusique = new ArrayList<Musique>();
-        } else {
-            List<Musique> ListMusique = new LinkedList<Musique>();
-        }
-        */
-        
         boolean ARRAYlist = false;
+        if (ARRAYlist) {
+            ListMusique = new ArrayList<>();
+        } else {
+            ListMusique = new LinkedList<>();
+        }
         Scanner scanner = new Scanner(System.in);
         int choix = 0, choix_charge;
-
-        if (ARRAYlist) {
-            List<Musique> ListMusique = new ArrayList<Musique>();
-
-        }
-        else {
-            List<Musique> ListMusique = new LinkedList<Musique>();
-        }
 
         System.out.println("Que voulez vous faire ?");
         System.out.println("1 - Charger les données (choix du fichier)");
@@ -68,13 +55,32 @@ public class AppliMusique {
                 choix_charge = scanner.nextInt();
 
                 switch(choix_charge){
-
+                    case 1:
+                        System.out.println("Chargement du fichier : spotify_100.csv");
+                        Lecture("spotify_100.csv", ARRAYlist);
+                        break;
+                    case 2:
+                        System.out.println("Chargement du fichier : spotify_1000.csv");
+                        Lecture("spotify_1000.csv", ARRAYlist);
+                        break;
+                    case 3:
+                        System.out.println("Chargement du fichier : spotify_10000.csv");
+                        Lecture("spotify_10000.csv", ARRAYlist);
+                        break;
+                    case 4:
+                        System.out.println("Chargement du fichier : spotify_100000.csv");
+                        Lecture("spotify_100000.csv", ARRAYlist);
+                        break;
+                    case 5:
+                        System.out.println("Chargement du fichier : spotify_FULL.csv");
+                        Lecture("spotify_FULL.csv", ARRAYlist);
+                        break;
                 }
-
                 break;
             case 2:
                 System.out.println("Vous avez choisi d'afficher les données");
-                Lecture("spotify_100.csv");
+                Lecture("spotify_100.csv", ARRAYlist);
+
                 break;
             case 3:
                 System.out.println("Vous avez choisi de Trier les données");
@@ -87,7 +93,7 @@ public class AppliMusique {
             case 4:
                 System.out.println("Vous avez choisi de Filter les données");
                 System.out.println("");
-                System.out.println("Quel type de filtre ");
+                System.out.println("Quel type de filtre voulez-vous faire ?");
                 System.out.println("1 - Filtre manuel");
                 System.out.println("2 - Filtre java");
                 break;
@@ -99,36 +105,45 @@ public class AppliMusique {
                 break;
             default:
                 System.out.println("");
-                System.out.println("Saississez un nombre ente 1 et 5");
-                System.out.println("1 - Charger les données (choix du fichier)");
-                System.out.println("2 - Afficher les données");
-                System.out.println("3 - Trier les données");
-                System.out.println("4 - Filtrer les données");
-                System.out.println("5 - Rechercher des données concernant un titre");
+                System.out.println("Erreur : Veuillez saisir un nombre ente 1 et 5");
                 break;
         }
     }
 
-    public static void Lecture(String nom) {
+    public static void Afficher(){
+        
+        
+    }
+    public static void Lecture(String nom, boolean ARRAYlist) {
+        
         try{
+
+            DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss 'UTC'");
             BufferedReader tsvReader = new BufferedReader(new FileReader(nom));
             String row = new String();
-            Musique musique = new Musique();
             row = tsvReader.readLine(); //row est égal à null si on est en fin de fichier
-            /*ListMusique m = new ListMusique();*/
+            String[] titre = row.split(",");
+            row = tsvReader.readLine();
+
 
             while(row != null){
 
                 String[] data = row.split(",");
-                System.out.println(data[0]);
-                row = tsvReader.readLine();
-                musique.titre = data[0];
-                musique.artiste = data[5];
-                musique.date_album = LocalDate.parse(data[8]);
-                musique.duree_titre = Integer.parseInt(data[3]);
-                musique.id_titre = data[1];
-                musique.nom_Album = data[7];
+                //System.out.println(data[0]+", "+ data[1]+", "+ data[3]+", "+ data[4]+", "+data[7]+", "+data[8]+", "+data[9]+", "+data[10]+", "+data[5]);
+                Musique musique = new Musique(
+                        data[0],     // titre_Musique = track_name
+                        data[1],     // id_titre = track_id
+                        Integer.parseInt(data[3]),    // duree_titre = duration_sec
+                        data[4],     // type_album = album_type
+                        data[7],     // nom_Album = album_name
+                        LocalDateTime.parse(data[8], f).toLocalDate(),     // date_album = release_date
+                        data[9],    // nom_Artiste = artist_0
+                        Integer.parseInt(data[10]),    // popularite = album_popularity
+                        data[5]      // artiste = artists (la liste complète)
+                );
 
+                ListMusique.add(musique);
+                row = tsvReader.readLine();
             }
         }
         catch (IOException e) {
