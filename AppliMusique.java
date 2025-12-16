@@ -210,7 +210,7 @@ public class AppliMusique {
                                     start = System.nanoTime();
                                     filtreAnnee(ListMusique, choix); // Supprime tout ce qui n'est pas de l'année
                                     stop = System.nanoTime();
-                                   
+                                   Afficher();
                                    System.out.println("Temps d'exécution : " + (float) (stop - start)/1000000 + " ms");
                                     break;
                                 case 2:
@@ -222,22 +222,32 @@ public class AppliMusique {
                                     start = System.nanoTime();
                                     filtreChanson(ListMusique, phrase);
                                     stop = System.nanoTime();
-                                   
+                                   Afficher();
                                    System.out.println("Temps d'exécution : " + (float) (stop - start)/1000000 + " ms");
                                     break;
                                 case 3:
                                     System.out.println("Entrez l'album que vous voulez filtrer : ");
+                                     start = System.nanoTime();
                                     do {
                                         phrase = scanner.nextLine();
                                     } while (phrase.isEmpty());
+                                    start = System.nanoTime();
                                     filtreAlbum(ListMusique, phrase);
+                                    stop = System.nanoTime();
+                                   Afficher();
+                                   System.out.println("Temps d'exécution : " + (float) (stop - start)/1000000 + " ms");
                                     break;
                                 case 4:
                                     System.out.println("Entrez l'artiste que vous voulez filtrer : ");
+                                     start = System.nanoTime();
                                     do {
                                         phrase = scanner.nextLine();
                                     } while (phrase.isEmpty());
+                                    start = System.nanoTime();
                                     filtreArtiste(ListMusique, phrase);
+                                    stop = System.nanoTime();
+                                   Afficher();
+                                   System.out.println("Temps d'exécution : " + (float) (stop - start)/1000000 + " ms");
                                     break;
                             }
                             break;
@@ -609,25 +619,21 @@ public class AppliMusique {
     // Supprime de la liste principale tout ce qui ne correspond pas à l'année donnée
     public static void filtreAnnee(List<Musique> listMusique, int date) {
         ListMusique.removeIf(f -> f.date_album.getYear() != date);
-        Afficher();
     }
 
     // Supprime si le nom de l'album ne contient pas la chaîne cherchée
     public static void filtreAlbum(List<Musique> listMusique, String nom) {
         ListMusique.removeIf(f -> !f.nom_Album.contains(nom));
-        Afficher();
     }
 
     // Supprime si le titre ne contient pas la chaîne cherchée
     public static void filtreChanson(List<Musique> listMusique, String chanson) {
         ListMusique.removeIf(f -> !f.nom_Musique.contains(chanson));
-        Afficher();
     }
 
     // Supprime si l'artiste ne contient pas la chaîne cherchée
     public static void filtreArtiste(List<Musique> listMusique, String artiste) {
         ListMusique.removeIf(f -> !f.nom_Artiste.contains(artiste));
-        Afficher();
     }
 
     /**
@@ -648,4 +654,5 @@ public class AppliMusique {
         System.out.println("");
     }
 }
+
 
